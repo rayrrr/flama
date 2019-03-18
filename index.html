@@ -433,85 +433,87 @@ necessary information to generate your API Schema.</li>
 <li><a href="https://starlette.io">Starlette</a> 0.10+</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<pre><code class="console">$ pip install starlette-api
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> pip install starlette-api
+</pre></div>
+
 
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<pre><code class="python">from marshmallow import Schema, fields, validate
-from starlette_api.applications import Starlette
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">marshmallow</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">validate</span>
+<span class="kn">from</span> <span class="nn">starlette_api.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
 
 
-# Data Schema
-class Puppy(Schema):
-    id = fields.Integer()
-    name = fields.String()
-    age = fields.Integer(validate=validate.Range(min=0))
+<span class="c1"># Data Schema</span>
+<span class="k">class</span> <span class="nc">Puppy</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">String</span><span class="p">()</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 
 
-# Database
-puppies = [
-    {&quot;id&quot;: 1, &quot;name&quot;: &quot;Canna&quot;, &quot;age&quot;: 6},
-    {&quot;id&quot;: 2, &quot;name&quot;: &quot;Sandy&quot;, &quot;age&quot;: 12},
-]
+<span class="c1"># Database</span>
+<span class="n">puppies</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Canna&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sandy&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span>
+<span class="p">]</span>
 
 
-# Application
-app = Starlette(
-    components=[],      # Without custom components
-    title=&quot;Foo&quot;,        # API title
-    version=&quot;0.1&quot;,      # API version
-    description=&quot;Bar&quot;,  # API description
-    schema=&quot;/schema/&quot;,  # Path to expose OpenAPI schema
-    docs=&quot;/docs/&quot;,      # Path to expose Swagger UI docs
-    redoc=&quot;/redoc/&quot;,    # Path to expose ReDoc docs
-)
+<span class="c1"># Application</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[],</span>      <span class="c1"># Without custom components</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span>        <span class="c1"># API title</span>
+    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span>      <span class="c1"># API version</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bar&quot;</span><span class="p">,</span>  <span class="c1"># API description</span>
+    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;/schema/&quot;</span><span class="p">,</span>  <span class="c1"># Path to expose OpenAPI schema</span>
+    <span class="n">docs</span><span class="o">=</span><span class="s2">&quot;/docs/&quot;</span><span class="p">,</span>      <span class="c1"># Path to expose Swagger UI docs</span>
+    <span class="n">redoc</span><span class="o">=</span><span class="s2">&quot;/redoc/&quot;</span><span class="p">,</span>    <span class="c1"># Path to expose ReDoc docs</span>
+<span class="p">)</span>
 
 
-# Views
-@app.route(&quot;/&quot;, methods=[&quot;GET&quot;])
-def list_puppies(name: str = None) -&gt; Puppy(many=True):
-    &quot;&quot;&quot;
-    List the puppies collection. There is an optional query parameter that 
-    specifies a name for filtering the collection based on it.
+<span class="c1"># Views</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">list_puppies</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Puppy</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    List the puppies collection. There is an optional query parameter that </span>
+<span class="sd">    specifies a name for filtering the collection based on it.</span>
 
-    Request example:
-    GET http://example.com/?name=Sandy
+<span class="sd">    Request example:</span>
+<span class="sd">    GET http://example.com/?name=Sandy</span>
 
-    Response example:
-    200
-    [
-        {&quot;id&quot;: 2, &quot;name&quot;: &quot;Sandy&quot;, &quot;age&quot;: 12}
-    ]
-    &quot;&quot;&quot;
-    return [puppy for puppy in puppies if puppy[&quot;name&quot;] == name]
+<span class="sd">    Response example:</span>
+<span class="sd">    200</span>
+<span class="sd">    [</span>
+<span class="sd">        {&quot;id&quot;: 2, &quot;name&quot;: &quot;Sandy&quot;, &quot;age&quot;: 12}</span>
+<span class="sd">    ]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">puppy</span> <span class="k">for</span> <span class="n">puppy</span> <span class="ow">in</span> <span class="n">puppies</span> <span class="k">if</span> <span class="n">puppy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
 
 
-@app.route(&quot;/&quot;, methods=[&quot;POST&quot;])
-def create_puppy(puppy: Puppy) -&gt; Puppy:
-    &quot;&quot;&quot;
-    Create a new puppy using data validated from request body and add it
-    to the collection.
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">create_puppy</span><span class="p">(</span><span class="n">puppy</span><span class="p">:</span> <span class="n">Puppy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Puppy</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new puppy using data validated from request body and add it</span>
+<span class="sd">    to the collection.</span>
 
-    Request example:
-    POST http://example.com/
-    {
-        &quot;id&quot;: 1,
-        &quot;name&quot;: &quot;Canna&quot;,
-        &quot;age&quot;: 6
-    }
+<span class="sd">    Request example:</span>
+<span class="sd">    POST http://example.com/</span>
+<span class="sd">    {</span>
+<span class="sd">        &quot;id&quot;: 1,</span>
+<span class="sd">        &quot;name&quot;: &quot;Canna&quot;,</span>
+<span class="sd">        &quot;age&quot;: 6</span>
+<span class="sd">    }</span>
 
-    Response example:
-    200
-    {
-        &quot;id&quot;: 1,
-        &quot;name&quot;: &quot;Canna&quot;,
-        &quot;age&quot;: 6
-    }
-    &quot;&quot;&quot;
-    puppies.append(puppy)
+<span class="sd">    Response example:</span>
+<span class="sd">    200</span>
+<span class="sd">    {</span>
+<span class="sd">        &quot;id&quot;: 1,</span>
+<span class="sd">        &quot;name&quot;: &quot;Canna&quot;,</span>
+<span class="sd">        &quot;age&quot;: 6</span>
+<span class="sd">    }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">puppies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">puppy</span><span class="p">)</span>
 
-    return puppy
-</code></pre>
+    <span class="k">return</span> <span class="n">puppy</span>
+</pre></div>
+
 
 <h2 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link">&para;</a></h2>
 <p>That library started as an adaptation <a href="https://github.com/encode/apistar">APIStar</a> to work with 
