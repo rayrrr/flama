@@ -291,6 +291,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dependencies" title="Dependencies" class="md-nav__link">
+    Dependencies
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#credits" title="Credits" class="md-nav__link">
     Credits
   </a>
@@ -357,6 +364,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dependencies" title="Dependencies" class="md-nav__link">
+    Dependencies
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#credits" title="Credits" class="md-nav__link">
     Credits
   </a>
@@ -415,22 +429,22 @@
 <p>It is production-ready and provides the following:</p>
 <ul>
 <li><strong>Generic classes</strong> for API resources that provides standard CRUD methods over SQLAlchemy tables.</li>
-<li><strong>Schema system</strong> based on <a href="https://github.com/marshmallow-code/marshmallow/">Marshmallow</a> that allows to <strong>declare</strong>
-the inputs and outputs of endpoints and provides a reliable way of <strong>validate</strong> data against those schemas.</li>
+<li><strong>Schema system</strong> based on <a href="https://marshmallow.readthedocs.io/">Marshmallow</a> that allows to <strong>declare</strong> the inputs and outputs of endpoints and provides 
+a reliable way of <strong>validate</strong> data against those schemas.</li>
 <li><strong>Dependency Injection</strong> that ease the process of managing parameters needed in endpoints. Starlette ASGI objects 
 like <code>Request</code>, <code>Response</code>, <code>Session</code> and so on are defined as components and ready to be injected in your endpoints.</li>
 <li><strong>Components</strong> as the base of the plugin ecosystem, allowing you to create custom or use those already defined in 
 your endpoints, injected as parameters.</li>
 <li><strong>Auto generated API schema</strong> using OpenAPI standard. It uses the schema system of your endpoints to extract all the 
 necessary information to generate your API Schema.</li>
-<li><strong>Auto generated docs</strong> providing a <a href="https://swagger.io/tools/swagger-ui/">Swagger UI</a> or 
-<a href="https://rebilly.github.io/ReDoc/">ReDoc</a> endpoint.</li>
+<li><strong>Auto generated docs</strong> providing a <a href="https://swagger.io/tools/swagger-ui/">Swagger UI</a> or <a href="https://rebilly.github.io/ReDoc/">ReDoc</a> endpoint.</li>
 <li><strong>Pagination</strong> automatically handled using multiple methods such as limit and offset, page numbers...</li>
 </ul>
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://www.python.org">Python</a> 3.6+</li>
 <li><a href="https://starlette.io">Starlette</a> 0.10+</li>
+<li><a href="https://marshmallow.readthedocs.io/">Marshmallow</a> 3.0+</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> pip install starlette-api
@@ -472,17 +486,12 @@ necessary information to generate your API Schema.</li>
 <span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">list_puppies</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Puppy</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    List the puppies collection. There is an optional query parameter that </span>
-<span class="sd">    specifies a name for filtering the collection based on it.</span>
-
-<span class="sd">    Request example:</span>
-<span class="sd">    GET http://example.com/?name=Sandy</span>
-
-<span class="sd">    Response example:</span>
-<span class="sd">    200</span>
-<span class="sd">    [</span>
-<span class="sd">        {&quot;id&quot;: 2, &quot;name&quot;: &quot;Sandy&quot;, &quot;age&quot;: 12}</span>
-<span class="sd">    ]</span>
+<span class="sd">    description:</span>
+<span class="sd">        List the puppies collection. There is an optional query parameter that specifies a name for filtering the </span>
+<span class="sd">        collection based on it.</span>
+<span class="sd">    responses:</span>
+<span class="sd">        200:</span>
+<span class="sd">            description: List puppies.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">puppy</span> <span class="k">for</span> <span class="n">puppy</span> <span class="ow">in</span> <span class="n">puppies</span> <span class="k">if</span> <span class="n">puppy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
 
@@ -490,24 +499,11 @@ necessary information to generate your API Schema.</li>
 <span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">create_puppy</span><span class="p">(</span><span class="n">puppy</span><span class="p">:</span> <span class="n">Puppy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Puppy</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a new puppy using data validated from request body and add it</span>
-<span class="sd">    to the collection.</span>
-
-<span class="sd">    Request example:</span>
-<span class="sd">    POST http://example.com/</span>
-<span class="sd">    {</span>
-<span class="sd">        &quot;id&quot;: 1,</span>
-<span class="sd">        &quot;name&quot;: &quot;Canna&quot;,</span>
-<span class="sd">        &quot;age&quot;: 6</span>
-<span class="sd">    }</span>
-
-<span class="sd">    Response example:</span>
-<span class="sd">    200</span>
-<span class="sd">    {</span>
-<span class="sd">        &quot;id&quot;: 1,</span>
-<span class="sd">        &quot;name&quot;: &quot;Canna&quot;,</span>
-<span class="sd">        &quot;age&quot;: 6</span>
-<span class="sd">    }</span>
+<span class="sd">    description:</span>
+<span class="sd">        Create a new puppy using data validated from request body and add it to the collection.</span>
+<span class="sd">    responses:</span>
+<span class="sd">        200:</span>
+<span class="sd">            description: Puppy created successfully.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">puppies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">puppy</span><span class="p">)</span>
 
@@ -515,11 +511,22 @@ necessary information to generate your API Schema.</li>
 </pre></div>
 
 
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<p>Following Starlette philosophy Starlette API reduce the number of hard dependencies to those that are used as the core:
+<em> <a href="https://starlette.io"><code>starlette</code></a> - Starlette API is a layer on top of it.
+</em> <a href="https://marshmallow.readthedocs.io/"><code>marshmallow</code></a> - Starlette API data schemas and validation.</p>
+<p>It does not have any more hard dependencies, but some of them are necessaries to use some features:</p>
+<ul>
+<li><a href="https://pyyaml.org/wiki/PyYAMLDocumentation"><code>pyyaml</code></a> - Required for API Schema and Docs auto generation.</li>
+<li><a href="https://apispec.readthedocs.io/"><code>apispec</code></a> - Required for API Schema and Docs auto generation.</li>
+<li><a href="https://python-forge.readthedocs.io/"><code>python-forge</code></a> - Required for pagination.</li>
+<li><a href="https://www.sqlalchemy.org/"><code>sqlalchemy</code></a> - Required for Generic API resources.</li>
+<li><a href="https://github.com/encode/databases"><code>databases</code></a> - Required for Generic API resources.</li>
+</ul>
+<p>You can install all of these with <code>pip3 install starlette-api[full]</code>.</p>
 <h2 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link">&para;</a></h2>
-<p>That library started as an adaptation <a href="https://github.com/encode/apistar">APIStar</a> to work with 
-<a href="https://github.com/encode/starlette">Starlette</a>, but a great amount of the code has been rewritten to use 
-<a href="https://github.com/marshmallow-code/marshmallow/">Marshmallow</a> as the schema system, to support websockets and adding 
-new functionalities like pagination, generic resources...</p>
+<p>That library started as an adaptation of <a href="https://github.com/encode/apistar/tree/version-0.5.x">APIStar</a> to work with <a href="https://starlette.io">Starlette</a>, but a great amount of the code has been 
+rewritten to use <a href="https://marshmallow.readthedocs.io/">Marshmallow</a> as the schema system.</p>
 <h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
 <p>This project is absolutely open to contributions so if you have a nice idea, create an issue to let the community 
 discuss it.</p>
